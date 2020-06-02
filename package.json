@@ -1,0 +1,27 @@
+{
+  "name": "woowha-clone-coding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest --config=jest.config.js",
+    "start": "http-server . -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eyabc/woowha-camp-clone-coding.git"
+  },
+  "author": "eyabc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eyabc/woowha-camp-clone-coding/issues"
+  },
+  "homepage": "https://github.com/eyabc/woowha-camp-clone-coding#readme",
+  "dependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "babel-jest": "^26.0.1",
+    "http-server": "^0.12.3",
+    "jest": "^26.0.1"
+  }
+}
