@@ -1,0 +1,86 @@
+#App {
+    margin: 1.5em auto;
+    max-width: 1200px;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 0 0;
+}
+
+section {
+    margin: 20px 0;
+}
+
+table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+}
+
+td {
+    text-align: center;
+}
+
+button {
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.display-flex {
+    display: flex;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal .container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #eee;
+    border-radius: 5px;
+    min-width: 768px;
+}
+
+.modal .container .header {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.modal .container .header .close {
+    border: none;
+    display: inline-flex;
+    align-items: flex-start;
+}
+
+.modal .container .content-wrapper {
+    margin: 20px;
+}
+
+.modal .container .content-wrapper.half {
+    width: 50%;
+}

@@ -1,4 +1,6 @@
 import { validateAllocatedOrders } from './utils/validator.js';
+import Table from './Table.js';
+import DriverInfoModal from './DriverInfoModal.js';
 
 export default class Dashboard {
   $target = null;
@@ -17,6 +19,8 @@ export default class Dashboard {
     this.$target = $target;
     this.createHeader($target);
     this.createAllocationButton($target);
+    this.createDriverTable($target);
+    this.createModals($target);
     this.createTextArea($target);
   }
 
@@ -81,6 +85,34 @@ export default class Dashboard {
     $target.appendChild($container);
   }
 
+  createDriverTable ($target) {
+    const driverTableHeaders = [
+      '이름',
+      '첫 배달 접수 시간',
+      '배달 완료된 매출',
+      '오늘 이동한 거리',
+      '이후 배달 일정',
+    ];
+
+    function handleHeaderClick (index) {
+      alert(driverTableHeaders[index]);
+    }
+
+    const $container = document.createElement('div');
+    $container.className = 'display-flex justify-end';
+    this.$driverTableSortInfo = $container;
+
+    this.renderSortInfo(driverTableHeaders[0], false);
+
+    this.$driverTable = new Table($target);
+    this.$driverTable.createTableHeaders(driverTableHeaders, handleHeaderClick);
+
+  }
+
+  createModals ($target) {
+    this.$driverInfoModal = new DriverInfoModal($target);
+  }
+
   createTextArea ($target) {
     const $textArea = document.createElement('TEXTAREA', { id: 'result' });
     $target.appendChild($textArea);
@@ -114,7 +146,36 @@ export default class Dashboard {
     this.render();
   }
 
-  render () {
+  renderSortInfo (header, isDescending) {
+    const sort = isDescending ? '내림차순' : '오름차순';
+    this.$driverTableSortInfo.innerHTML = `
+      <span>정렬: ${ header }(${ sort })</span>
+    `;
+  }
 
+  render () {
+    function handleDriverClick (item) {
+      this.$driverInfoModal.setState({
+        visible: true,
+        places: this.data.places,
+        driver: item,
+      })
+    }
+
+    this.$driverTable.render(this.driverData, item => {
+      const reservedOrderCount = item.reservedOrders.length;
+      return `
+        <tr>
+            <td>${ item.name }</td>
+            <td>${ item.firstOrderedAt }</td>
+            <td>${ item.todayDeliveryMenuPrice }</td>
+            <td>${ item.todayDeliveryDistance }</td>
+            <td>${ reservedOrderCount > 0
+        ? `${ reservedOrderCount }개 오더 수행 예정`
+        : `이후 배달 일정이 없습니다.` }
+            </td>
+        </tr>
+      `;
+    }, handleDriverClick.bind(this));
   }
 }
