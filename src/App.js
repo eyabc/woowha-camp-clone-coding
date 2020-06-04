@@ -14,7 +14,7 @@ export default class App {
   }
 
   fetchData() {
-    const driver = Data.fetchDrivers()
+    const drivers = Data.fetchDrivers()
     const orders = Data.fetchOrders()
     const places = Data.fetchPlaces()
 
