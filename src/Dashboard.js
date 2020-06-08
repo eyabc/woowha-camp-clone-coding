@@ -118,6 +118,31 @@ export default class Dashboard {
     $target.appendChild($textArea);
   }
 
+  getMillisecondTime (timeArr) {
+    const Y = new Date().getFullYear();
+    const M = new Date().getMonth() + 1;
+    const D = new Date().getDate();
+
+    return timeArr.map(time => +new Date(`${ Y }-${ M }-${ D } ${ time }`));
+  }
+
+  booleanValidPrice (orderedAt, deliveredAt) {
+    // 1000ms(1초) * 60(1분) * 60(1시간)
+    const oneHour = 1000 * 60 * 60;
+    return deliveredAt - orderedAt <= oneHour;
+  }
+
+  getDeliveryMenuPrice (driverOrders) {
+
+    return driverOrders.reduce((sum, order) => {
+      if (order.deliveredAt.length === 0) return sum;
+
+      const [orderedAt, deliveredAt] = this.getMillisecondTime([order.orderedAt, order.deliveredAt]);
+      const check = this.booleanValidPrice(orderedAt, deliveredAt);
+      return sum + (check * order.price);
+    }, 0);
+  }
+
   aggregateDriverData () {
     const aggregateDriverData = [];
 
@@ -126,12 +151,13 @@ export default class Dashboard {
         .filter(order => order.driverId === driver.id);
 
       const firstOrderedAt = driverOrders.length ? driverOrders[0].orderedAt : '';
+      const todayDeliveryMenuPrice = this.getDeliveryMenuPrice(driverOrders);
 
       const driverInfo = {
         id: driver.id,
         name: driver.name,
         firstOrderedAt,
-        todayDeliveryMenuPrice: 0,
+        todayDeliveryMenuPrice,
         todayDeliveryDistance: 0,
         reservedOrders: [],
         orders: [],
@@ -162,7 +188,7 @@ export default class Dashboard {
         visible: true,
         places: this.data.places,
         driver: item,
-      })
+      });
     }
 
     this.$driverTable.render(this.driverData, item => {
