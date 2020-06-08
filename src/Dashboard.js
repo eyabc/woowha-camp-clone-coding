@@ -122,17 +122,20 @@ export default class Dashboard {
     const aggregateDriverData = [];
 
     this.data.drivers.forEach(driver => {
+      const driverOrders = this.data.orders
+        .filter(order => order.driverId === driver.id);
+
+      const firstOrderedAt = driverOrders.length ? driverOrders[0].orderedAt : '';
+
       const driverInfo = {
         id: driver.id,
         name: driver.name,
-        firstOrderedAt: '',
+        firstOrderedAt,
         todayDeliveryMenuPrice: 0,
         todayDeliveryDistance: 0,
         reservedOrders: [],
         orders: [],
       };
-      const driverOrders = this.data.orders
-        .filter(order => order.driverId === driver.id);
       driverInfo.orders = driverOrders;
 
       aggregateDriverData.push(driverInfo);
