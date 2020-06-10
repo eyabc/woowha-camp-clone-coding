@@ -105,6 +105,7 @@ export default class Dashboard {
 
     this.renderSortInfo(driverTableHeaders[0], false);
 
+    $target.appendChild($container);
     this.$driverTable = new Table($target);
     this.$driverTable.createTableHeaders(driverTableHeaders, handleHeaderClick);
 
@@ -150,12 +151,11 @@ export default class Dashboard {
     this.aggregateDriverData();
     this.render();
   }
-
-  renderSortInfo (header, isDescending) {
-    const sort = isDescending ? '내림차순' : '오름차순';
+  renderSortInfo(header, isDescending) {
+    const sort = isDescending ? '내림차순' : '오름차순'
     this.$driverTableSortInfo.innerHTML = `
-      <span>정렬: ${ header }(${ sort })</span>
-    `;
+            <span>정렬: ${header}(${sort})</span>
+        `
   }
 
   render () {

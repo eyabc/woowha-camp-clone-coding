@@ -52,9 +52,9 @@ const getDeliveryDistance = (driverOrders, driverPosData, places) => {
   }, [[56, 56], 0])[1];
 };
 
-const sortByDriverName = (drivers) => {
-  drivers.sort((a, b) => a.name > b.name ? 1 : -1);
+const sortByField = (drivers, field) => {
+  drivers.sort((a, b) => a[field] > b[field] ? 1 : -1);
   return drivers;
 };
 
-export { getDeliveryMenuPrice, getDeliveryDistance, sortByDriverName };
+export { getDeliveryMenuPrice, getDeliveryDistance, sortByField };

@@ -1,4 +1,4 @@
-import { getDeliveryMenuPrice, getDeliveryDistance, sortByDriverName } from '../utils/allFuncs';
+import { getDeliveryMenuPrice, getDeliveryDistance, sortByField } from '../utils/allFuncs';
 
 const driverOrders = require('./mock/driverOrders.json');
 const places = require('./mock/places');
@@ -17,6 +17,6 @@ test('오늘 이동한 거리', () => {
 });
 
 test('드라이버 이름 오름차순 정렬', () => {
-  const res = sortByDriverName(drivers)[0].name;
+  const res =  sortByField(drivers, 'name')[0].name;
   expect(res).toBe('강다인')
 });
