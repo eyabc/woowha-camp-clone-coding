@@ -1,7 +1,16 @@
 import { validateAllocatedOrders } from './utils/validator.js';
 import Table from './Table.js';
 import DriverInfoModal from './DriverInfoModal.js';
-import { getDeliveryMenuPrice, getDeliveryDistance } from './utils/allFuncs.js';
+import { getDeliveryMenuPrice, getDeliveryDistance, sortByField } from './utils/allFuncs.js';
+
+const driverTableHeaders = {
+  '이름': 'name',
+  '첫 배달 접수 시간': 'firstOrderedAt',
+  '배달 완료된 매출': 'todayDeliveryMenuPrice',
+  '오늘 이동한 거리': 'todayDeliveryDistance',
+  '이후 배달 일정': 'reservedOrders',
+};
+
 
 export default class Dashboard {
   $target = null;
@@ -15,6 +24,11 @@ export default class Dashboard {
     places: [],
   };
   driverData = [];
+
+  sortBase = {
+    isDescending: false,
+    field: '이름',
+  };
 
   constructor ($target) {
     this.$target = $target;
@@ -86,28 +100,34 @@ export default class Dashboard {
     $target.appendChild($container);
   }
 
-  createDriverTable ($target) {
-    const driverTableHeaders = [
-      '이름',
-      '첫 배달 접수 시간',
-      '배달 완료된 매출',
-      '오늘 이동한 거리',
-      '이후 배달 일정',
-    ];
 
-    function handleHeaderClick (index) {
-      alert(driverTableHeaders[index]);
+
+  getSortBase(newField) {
+    const {field, isDescending } = this.sortBase;
+    if (field === newField) return { field, isDescending: !isDescending, };
+    else return {field: newField, isDescending: false }
+  }
+
+
+  createDriverTable ($target) {
+
+    function handleHeaderClick (index, header) {
+      const {field, isDescending } = this.getSortBase(header);
+      const sorted = sortByField(this.driverData, driverTableHeaders[field], isDescending);
+
+      this.setDriverData(sorted);
+      this.setSortBase({field, isDescending});
     }
 
     const $container = document.createElement('div');
     $container.className = 'display-flex justify-end';
     this.$driverTableSortInfo = $container;
 
-    this.renderSortInfo(driverTableHeaders[0], false);
-
+    this.renderSortInfo(this.sortBase.field, this.sortBase.isDescending);
     $target.appendChild($container);
+
     this.$driverTable = new Table($target);
-    this.$driverTable.createTableHeaders(driverTableHeaders, handleHeaderClick);
+    this.$driverTable.createTableHeaders(Object.keys(driverTableHeaders), handleHeaderClick.bind(this));
 
   }
 
@@ -146,16 +166,30 @@ export default class Dashboard {
     this.driverData = aggregateDriverData;
   }
 
+
+
+  renderSortInfo () {
+    const {field, isDescending} = this.sortBase;
+    const sort = isDescending ? '내림차순' : '오름차순';
+    this.$driverTableSortInfo.innerHTML = `
+            <span>정렬: ${ field }(${ sort })</span>
+        `;
+  }
+
   setState (data) {
     this.data = data;
     this.aggregateDriverData();
     this.render();
   }
-  renderSortInfo(header, isDescending) {
-    const sort = isDescending ? '내림차순' : '오름차순'
-    this.$driverTableSortInfo.innerHTML = `
-            <span>정렬: ${header}(${sort})</span>
-        `
+
+  setSortBase(data) {
+    this.sortBase = data;
+    this.renderSortInfo ();
+  }
+
+  setDriverData(driverData) {
+    this.driverData = driverData;
+    this.render();
   }
 
   render () {

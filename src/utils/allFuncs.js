@@ -52,9 +52,20 @@ const getDeliveryDistance = (driverOrders, driverPosData, places) => {
   }, [[56, 56], 0])[1];
 };
 
-const sortByField = (drivers, field) => {
-  drivers.sort((a, b) => a[field] > b[field] ? 1 : -1);
-  return drivers;
+const sortByField = (drivers, field, isDescending) => {
+  const toggle = isDescending ? -1 : 1;
+  const newDrivers = [...drivers];
+  const Infinity = '24590000000000000000000';
+
+  newDrivers.sort((a, b) => {
+    let A = a[field], B = b[field];
+    if (!isDescending) {
+      if (!A) A = Infinity;
+      if (!B) B = Infinity;
+    }
+    return (A > B ? 1 : A < B ? -1 : 0) * toggle;
+  });
+  return newDrivers;
 };
 
 export { getDeliveryMenuPrice, getDeliveryDistance, sortByField };

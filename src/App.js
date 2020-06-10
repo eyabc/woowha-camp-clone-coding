@@ -15,7 +15,7 @@ export default class App {
   }
 
   fetchData() {
-    const drivers = sortByField(Data.fetchDrivers(), 'name');
+    const drivers = sortByField(Data.fetchDrivers(), 'name', false);
     const orders = Data.fetchOrders();
     const places = Data.fetchPlaces();
 

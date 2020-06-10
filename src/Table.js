@@ -32,7 +32,8 @@ export default class Table {
     if (onClickHeader) {
       this.$thead.addEventListener('click', evt => {
         const index = Number.parseInt(evt.target.dataset.index, 10);
-        onClickHeader(index);
+        const field = evt.target.innerText;
+        onClickHeader(index, field);
       });
     }
   }
