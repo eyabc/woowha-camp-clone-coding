@@ -1,5 +1,6 @@
 import * as Data from './Data.js'
 import Dashboard from './Dashboard.js'
+import { sortByDriverName } from './utils/allFuncs.js';
 
 export default class App {
   $target = null
@@ -14,9 +15,9 @@ export default class App {
   }
 
   fetchData() {
-    const drivers = Data.fetchDrivers()
-    const orders = Data.fetchOrders()
-    const places = Data.fetchPlaces()
+    const drivers = sortByDriverName(Data.fetchDrivers());
+    const orders = Data.fetchOrders();
+    const places = Data.fetchPlaces();
 
     this.$dashboard.setState({
       drivers, orders, places
