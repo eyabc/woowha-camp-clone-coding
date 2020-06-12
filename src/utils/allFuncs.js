@@ -66,4 +66,25 @@ const sortByField = (drivers, field, isDescending) => {
   return newDrivers;
 };
 
-export { getDeliveryMenuPrice, getDeliveryDistance, sortByField };
+const getLSSortBase = () => {
+  let res = JSON.parse(localStorage.getItem('sortBase'));
+  if (!res) {
+    res = { field: '이름', isDescending: false };
+    localStorage.setItem('sortBase', JSON.stringify(res));
+  }
+  return res;
+};
+
+const setLSSortBase = (newField) => {
+  const { field, isDescending } = getLSSortBase();
+  let res;
+  res = field === newField ?
+    { field, isDescending: !isDescending }
+    : { field: newField, isDescending: false };
+
+  localStorage.setItem('sortBase',JSON.stringify(res));
+  return res;
+};
+
+
+export { getDeliveryMenuPrice, getDeliveryDistance, sortByField, getLSSortBase, setLSSortBase };
