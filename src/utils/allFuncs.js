@@ -21,9 +21,7 @@ const getDeliveryMenuPrice = (driverOrders) => {
   }, 0);
 };
 
-const getPlaceById = (places, placeId) => {
-  return places.find(place => place.id === placeId);
-};
+const getPlaceById = (places, placeId) => places.find(place => place.id === placeId);
 
 const getDist = (A, B) => Math.abs(A[0] - B[0]) + Math.abs(A[1] - B[1]);
 
