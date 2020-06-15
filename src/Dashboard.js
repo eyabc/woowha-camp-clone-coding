@@ -158,7 +158,7 @@ export default class Dashboard {
 
       aggregateDriverData.push(driverInfo);
     });
-    this.driverData = sortByField(aggregateDriverData, driverTableHeaders[this.sortBase.field], this.sortBase.isDescending)
+    this.driverData = sortByField(aggregateDriverData, driverTableHeaders[this.sortBase.field], this.sortBase.isDescending);
   }
 
   setPlaceOfOrder (order) {
