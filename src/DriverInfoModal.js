@@ -108,8 +108,8 @@ export default class DriverInfoModal {
             <td>${item.orderedAt}</td>
             <td>${item.pickedUpAt ?? ''}</td>
             <td>${item.deliveredAt ?? ''}</td>
-            <td></td>
-            <td></td>
+            <td>${item.placeName ?? ''}</td>
+            <td>${item.placePosition ? item.placePosition.join(', ') : ''}</td>
             <td>${item.deliveryPosition.join(', ')}</td>
             <td>${item.price}</td>
             <td></td>

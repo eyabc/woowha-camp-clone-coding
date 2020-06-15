@@ -1,7 +1,14 @@
 import { validateAllocatedOrders } from './utils/validator.js';
 import Table from './Table.js';
 import DriverInfoModal from './DriverInfoModal.js';
-import { getDeliveryMenuPrice, getDeliveryDistance, sortByField, getLSSortBase, setLSSortBase } from './utils/allFuncs.js';
+import {
+  getDeliveryMenuPrice,
+  getDeliveryDistance,
+  sortByField,
+  getLSSortBase,
+  setLSSortBase,
+  getPlaceById,
+} from './utils/allFuncs.js';
 
 import { driverTableHeaders } from './utils/const.js';
 
@@ -147,13 +154,22 @@ export default class Dashboard {
         reservedOrders: [],
         orders: [],
       };
-      driverInfo.orders = driverOrders;
+      driverInfo.orders = driverOrders.map(order => this.setPlaceOfOrder(order));
 
       aggregateDriverData.push(driverInfo);
     });
     this.driverData = sortByField(aggregateDriverData, driverTableHeaders[this.sortBase.field], this.sortBase.isDescending)
   }
 
+  setPlaceOfOrder (order) {
+    const placeInfo = getPlaceById(this.data.places, order.placeId);
+    order.placeName = placeInfo.name;
+    order.placePosition = placeInfo.position;
+    order.status = order.pickedUpAt.length ?
+      order.deliveredAt.length ? '배달 완료' : '배달 중'
+      : '배달 예정';
+    return order;
+  }
 
   renderSortInfo () {
     const { field, isDescending } = this.sortBase;
