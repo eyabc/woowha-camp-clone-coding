@@ -61,7 +61,7 @@ export default class Dashboard {
         .filter(order => !order.driverId)
         .forEach(order => {
           const driver = getNextDriver();
-          driver.reservedOrders.push(order);
+          driver.reservedOrders.push(this.setPlaceOfOrder(order));
         });
 
       /*
