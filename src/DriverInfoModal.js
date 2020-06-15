@@ -112,7 +112,7 @@ export default class DriverInfoModal {
             <td>${item.placePosition ? item.placePosition.join(', ') : ''}</td>
             <td>${item.deliveryPosition.join(', ')}</td>
             <td>${item.price}</td>
-            <td></td>
+            <td>${item.status}</td>
           </tr>
         `
       });
